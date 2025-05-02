@@ -1,12 +1,57 @@
-# React + Vite
+# 🧠 Web Tech Quiz App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A dynamic and responsive Quiz App built with **React.js** and **inline CSS styling**. It challenges users with multiple-choice questions on web development topics and gives real-time feedback and final scoring based on their performance.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Demo
 
-## Expanding the ESLint configuration
+👉 [Click here to try the Quiz App]
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🎯 Features
+
+- 🎨 Beautiful, responsive UI with animations (styled using inline CSS in React)
+- ✅ Instant feedback for selected answers
+- 📊 Final result summary with score, message, and progress bar
+- 🔁 Try Again feature to restart the quiz
+- 🔢 Navigation between questions (Previous/Next)
+- 📦 Clean React functional component with state management using hooks
+
+---
+
+## 📁 Project Structure
+Quiz-App/
+├── public/
+
+│ └── index.html
+
+├── src/
+
+│ ├── App.jsx # Main React component with logic and inline styles
+
+│ ├── quiz.js # Quiz question data (web tech questions)
+
+│ └── index.js # Entry point for React DOM rendering
+
+└── package.json
+
+
+---
+
+## 🛠️ Built With
+
+- React.js (Functional Components + Hooks)
+- Inline CSS for clean, scoped styling
+- JSX for component structure
+
+---
+
+## 🧪 How to Run Locally
+
+```bash
+git clone https://github.com/Yuktamahajan1999/Quiz-App.git
+cd Quiz-App
+npm install
+npm start
