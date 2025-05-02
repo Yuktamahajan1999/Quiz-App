@@ -4,12 +4,6 @@ A dynamic and responsive Quiz App built with **React.js** and **inline CSS styli
 
 ---
 
-## 🚀 Live Demo
-
-👉 [Click here to try the Quiz App] https://yuktamahajan1999.github.io/Quiz-App/
-
----
-
 ## 🎯 Features
 
 - 🎨 Beautiful, responsive UI with animations (styled using inline CSS in React)
@@ -21,6 +15,11 @@ A dynamic and responsive Quiz App built with **React.js** and **inline CSS styli
 
 ---
 
+## 🚀 Live Demo
+
+👉 [Click here to try the Quiz App] https://yuktamahajan1999.github.io/Quiz-App/
+
+---
 ## 📁 Project Structure
 Quiz-App/
 ├── public/
