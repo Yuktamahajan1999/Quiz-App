@@ -9,15 +9,6 @@ const QuizApp = () => {
   const TotalQuestions = webTechQuizQuestions.length;
   const currentQuestion = webTechQuizQuestions[currentQuesIndex];
 
-  // Animation styles
-  const fadeIn = {
-    animation: 'fadeIn 0.5s ease-in',
-    '@keyframes fadeIn': {
-      from: { opacity: 0 },
-      to: { opacity: 1 }
-    }
-  };
-
   function handlePrevClick() {
     setCurrentQuesIndex((prev) => (prev > 0 ? prev - 1 : TotalQuestions - 1));
   }
@@ -29,18 +20,16 @@ const QuizApp = () => {
   function handleAnswerClick(option) {
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [currentQuesIndex]: { 
-        answer: option, 
-        isCorrect: option === currentQuestion.answer 
-      },
+      [currentQuesIndex]: option, // Store only the selected answer
     }));
   }
 
   function calculateTotalScore() {
     setIsSubmitting(true);
     setTimeout(() => {
-      const score = Object.values(selectedAnswers).reduce((total, answer) => {
-        return total + (answer.isCorrect ? 1 : 0);
+      const score = Object.entries(selectedAnswers).reduce((total, [index, answer]) => {
+        const correctAnswer = webTechQuizQuestions[index].answer;
+        return total + (answer === correctAnswer ? 1 : 0);
       }, 0);
       setTotalScore(score);
       setIsSubmitting(false);
@@ -89,6 +78,32 @@ const QuizApp = () => {
               }}
             />
           </div>
+          
+          {/* Detailed results */}
+          <div style={styles.detailedResults}>
+            {webTechQuizQuestions.map((question, index) => {
+              const userAnswer = selectedAnswers[index];
+              const isCorrect = userAnswer === question.answer;
+              
+              return (
+                <div key={index} style={styles.resultItem}>
+                  <p style={styles.resultQuestion}>{index + 1}. {question.question}</p>
+                  <p style={styles.resultAnswer}>
+                    Your answer: <span style={{ 
+                      color: isCorrect ? '#4CAF50' : '#F44336',
+                      fontWeight: 'bold'
+                    }}>{userAnswer || 'Not answered'}</span>
+                  </p>
+                  {!isCorrect && (
+                    <p style={styles.correctAnswer}>
+                      Correct answer: {question.answer}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          
           <button 
             style={styles.restartButton}
             onClick={() => {
@@ -115,14 +130,11 @@ const QuizApp = () => {
       margin: '40px auto',
       boxShadow: '0 10px 25px rgba(0, 0, 0, 0.08)',
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      transition: 'all 0.3s ease',
-      ...fadeIn
     },
     header: {
       textAlign: 'center',
       color: '#2c3e50',
       marginBottom: '25px',
-      position: 'relative'
     },
     questionCounter: {
       fontSize: '14px',
@@ -151,12 +163,14 @@ const QuizApp = () => {
       transition: 'all 0.3s ease',
       display: 'flex',
       alignItems: 'center',
-      position: 'relative',
-      overflow: 'hidden'
+    },
+    selectedOption: {
+      backgroundColor: '#f8f9fa',
+      border: '2px solid #3498db',
+      transform: 'scale(0.98)'
     },
     optionText: {
       marginLeft: '10px',
-      zIndex: 2
     },
     buttonContainer: {
       display: 'flex',
@@ -192,7 +206,6 @@ const QuizApp = () => {
     resultContainer: {
       textAlign: 'center',
       padding: '30px',
-      ...fadeIn
     },
     scoreCircle: {
       width: '150px',
@@ -246,14 +259,32 @@ const QuizApp = () => {
       marginTop: '20px',
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
     },
-    optionIndicator: {
-      position: 'absolute',
-      left: '0',
-      top: '0',
-      width: '5px',
-      height: '100%',
-      backgroundColor: '#3498db',
-      transition: 'all 0.3s ease'
+    detailedResults: {
+      marginTop: '40px',
+      textAlign: 'left',
+      maxHeight: '400px',
+      overflowY: 'auto',
+      padding: '20px',
+      backgroundColor: '#f8f9fa',
+      borderRadius: '10px'
+    },
+    resultItem: {
+      marginBottom: '20px',
+      paddingBottom: '20px',
+      borderBottom: '1px solid #e0e0e0'
+    },
+    resultQuestion: {
+      fontWeight: '500',
+      color: '#2c3e50',
+      marginBottom: '10px'
+    },
+    resultAnswer: {
+      margin: '5px 0',
+      color: '#34495e'
+    },
+    correctAnswer: {
+      margin: '5px 0',
+      color: '#4CAF50'
     }
   };
 
@@ -270,25 +301,14 @@ const QuizApp = () => {
 
           <div style={styles.optionsContainer}>
             {currentQuestion.options.map((option, index) => {
-              const isSelected = selectedAnswers[currentQuesIndex]?.answer === option;
-              const isCorrect = selectedAnswers[currentQuesIndex]?.isCorrect;
+              const isSelected = selectedAnswers[currentQuesIndex] === option;
               
               return (
                 <div
                   key={index}
                   style={{
                     ...styles.optionItem,
-                    backgroundColor: isSelected 
-                      ? isCorrect 
-                        ? 'rgba(76, 175, 80, 0.1)' 
-                        : 'rgba(244, 67, 54, 0.1)'
-                      : '#fff',
-                    borderColor: isSelected
-                      ? isCorrect
-                        ? '#4CAF50'
-                        : '#F44336'
-                      : '#e0e0e0',
-                    transform: isSelected ? 'scale(0.98)' : 'scale(1)'
+                    ...(isSelected ? styles.selectedOption : {}),
                   }}
                   onClick={() => handleAnswerClick(option)}
                   onMouseEnter={(e) => {
@@ -304,17 +324,6 @@ const QuizApp = () => {
                     }
                   }}
                 >
-                  <div 
-                    style={{
-                      ...styles.optionIndicator,
-                      backgroundColor: isSelected
-                        ? isCorrect
-                          ? '#4CAF50'
-                          : '#F44336'
-                        : '#3498db',
-                      width: isSelected ? '8px' : '0px'
-                    }}
-                  />
                   <span style={styles.optionText}>
                     <strong>{String.fromCharCode(65 + index)}.</strong> {option}
                   </span>
